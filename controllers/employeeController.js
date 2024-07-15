@@ -23,36 +23,38 @@ const findEmployeesByCriteria = async (criteria, res) => {
   }
 };
 
+// Controller to find employees by role, department, or reporting manager
 exports.findEmployees = async (req, res) => {
   const { role, department, reportingManager } = req.query;
-  const { employeeIds, employeeNames, startDate, endDate, mobileNumber } = req.body;
+  findEmployeesByCriteria(employeeService.findEmployeesByCriteria(role, department, reportingManager), res);
+};
 
-  if (role || department || reportingManager) {
-    return findEmployeesByCriteria(employeeService.findEmployeesByCriteria(role, department, reportingManager), res);
-  } else if (startDate && endDate) {
-    return findEmployeesByCriteria(employeeService.findEmployeesByDOB(startDate, endDate), res);
-  } else if (employeeIds) {
+// Controller to find employees by multiple IDs or names
+exports.findEmployeesByIdsOrNames = async (req, res) => {
+  const { employeeIds, employeeNames } = req.body;
+
+  if (employeeIds) {
     return findEmployeesByCriteria(employeeService.findEmployeesByIds(employeeIds), res);
   } else if (employeeNames) {
     return findEmployeesByCriteria(employeeService.findEmployeesByNames(employeeNames), res);
-  } else if (mobileNumber) {
-    return findEmployeesByCriteria(employeeService.findEmployeeByMobileNumber(mobileNumber), res);
   } else {
     return res.status(400).json({ status: 0, message: 'Invalid search criteria' });
   }
 };
 
+// Controller to find employees by mobile number
 exports.findEmployeesByMobile = async (req, res) => {
   const { mobileNumber } = req.body;
   findEmployeesByCriteria(employeeService.findEmployeeByMobileNumber(mobileNumber), res);
 };
 
+// Controller to find employees by DOB range
 exports.findEmployeesByDOB = async (req, res) => {
   const { startDate, endDate } = req.body;
   findEmployeesByCriteria(employeeService.findEmployeesByDOB(startDate, endDate), res);
 };
 
-// Method for bulk entries
+// Controller for bulk insert
 exports.bulkInsertEmployees = async (req, res) => {
   const employees = req.body;
 

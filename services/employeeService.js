@@ -91,7 +91,6 @@ exports.findEmployeeByMobileNumber = async (mobileNumber) => {
   return mapResponseToSource(response);
 };
 
-//method for bulk insert
 exports.bulkInsertEmployees = async (employees) => {
   const bulkBody = [];
 
