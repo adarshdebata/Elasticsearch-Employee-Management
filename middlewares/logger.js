@@ -7,7 +7,7 @@ const logger = (req, res, next) => {
       const duration = process.hrtime(startTime);
       const durationInMs = duration[0] * 1000 + duration[1] / 1e6;
       const contentLength = res.getHeader('content-length');
-      const logMessage = `My Logger : ${method} ${url} ${statusCode} ${durationInMs.toFixed(2)}ms ${contentLength}bytes\n`;
+      const logMessage = `Logger : ${method} ${url} ${statusCode} ${durationInMs.toFixed(2)}ms ${contentLength}bytes\n`;
   
       console.log(logMessage); 
 
