@@ -1,12 +1,17 @@
-const client = require('../config/elastic');
+const client = require("../config/elastic");
 
-const mapResponseToSource = (response) => response.hits.hits.map(hit => hit._source);
+const mapResponseToSource = (response) =>
+  response.hits.hits.map((hit) => hit._source);
 
-exports.findEmployeesByCriteria = async (role, department, reportingManager) => {
+exports.findEmployeesByCriteria = async (
+  role,
+  department,
+  reportingManager
+) => {
   const query = {
     bool: {
-      must: []
-    }
+      must: [],
+    },
   };
 
   if (role) {
@@ -20,10 +25,10 @@ exports.findEmployeesByCriteria = async (role, department, reportingManager) => 
   }
 
   const response = await client.search({
-    index: 'employee_index',
+    index: "employee_index",
     body: {
-      query
-    }
+      query,
+    },
   });
 
   return mapResponseToSource(response);
@@ -31,17 +36,17 @@ exports.findEmployeesByCriteria = async (role, department, reportingManager) => 
 
 exports.findEmployeesByDOB = async (startDate, endDate) => {
   const response = await client.search({
-    index: 'employee_index',
+    index: "employee_index",
     body: {
       query: {
         range: {
           dob: {
             gte: startDate,
-            lte: endDate
-          }
-        }
-      }
-    }
+            lte: endDate,
+          },
+        },
+      },
+    },
   });
 
   return mapResponseToSource(response);
@@ -49,28 +54,28 @@ exports.findEmployeesByDOB = async (startDate, endDate) => {
 
 exports.findEmployeesByIds = async (employeeIds) => {
   const response = await client.mget({
-    index: 'employee_index',
+    index: "employee_index",
     body: {
-      ids: employeeIds
-    }
+      ids: employeeIds,
+    },
   });
 
-  return response.docs.map(doc => doc._source);
+  return response.docs.map((doc) => doc._source);
 };
 
 exports.findEmployeesByNames = async (employeeNames) => {
   const response = await client.search({
-    index: 'employee_index',
+    index: "employee_index",
     body: {
       query: {
         bool: {
-          should: employeeNames.map(name => ({
-            match: { employee_name: name }
+          should: employeeNames.map((name) => ({
+            match: { employee_name: name },
           })),
-          minimum_should_match: 1
-        }
-      }
-    }
+          minimum_should_match: 1,
+        },
+      },
+    },
   });
 
   return mapResponseToSource(response);
@@ -78,34 +83,32 @@ exports.findEmployeesByNames = async (employeeNames) => {
 
 exports.findEmployeeByMobileNumber = async (mobileNumber) => {
   const response = await client.search({
-    index: 'employee_index',
+    index: "employee_index",
     body: {
       query: {
         term: {
-          mobile_numbers: mobileNumber
-        }
-      }
-    }
+          mobile_numbers: mobileNumber,
+        },
+      },
+    },
   });
 
   return mapResponseToSource(response);
 };
 
 exports.bulkInsertEmployees = async (employees) => {
-  const bulkBody = [];
-
-  employees.forEach(emp => {
-    bulkBody.push({ index: { _index: 'employee_index', _id: emp.id } });
-    bulkBody.push(emp);
-  });
+  const bulkBody = employees.flatMap((emp) => [
+    { index: { _index: "employee_index", _id: emp.id } },
+    emp,
+  ]);
 
   const response = await client.bulk({
     refresh: true,
-    body: bulkBody
+    body: bulkBody,
   });
 
   if (response.errors) {
-    throw new Error('Error in bulk insertion');
+    throw new Error("Error in bulk insertion");
   }
 
   return response;
