@@ -7,6 +7,16 @@ export default [
     languageOptions: { sourceType: "commonjs" },
   },
   {
+    rules : {  
+        "no-unused-vars": ["error", {
+            "vars": "all",
+            "args": "after-used",
+            "caughtErrors": "all",
+            "ignoreRestSiblings": false,
+            "reportUsedIgnorePattern": false
+        }]}
+  },
+  {
     languageOptions: {
       globals: globals.node,
     },

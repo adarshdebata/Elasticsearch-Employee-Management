@@ -6,10 +6,21 @@
     "express-validator": "^7.1.0",
     "swagger-ui-express": "^5.0.1"
   },
+  "scripts": {
+    "eslint": "npx eslint **/*.js ",
+    "start": "node server.js"
+  },
   "devDependencies": {
     "@eslint/js": "^9.7.0",
     "eslint": "^9.7.0",
     "globals": "^15.8.0",
     "swagger-jsdoc": "^6.2.8"
-  }
+  },
+  "name": "elastic-api-fetching",
+  "version": "1.0.0",
+  "main": "server.js",
+  "keywords": [],
+  "author": "AdarshKumarDebata",
+  "license": "ISC",
+  "description": ""
 }
