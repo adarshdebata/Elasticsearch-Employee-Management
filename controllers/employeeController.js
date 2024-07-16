@@ -1,3 +1,4 @@
+const employeeService = require('../services/employeeService')
 /**
  * Helper function to format responses
  * @param {object} res - The response object
@@ -17,11 +18,6 @@ const sendResponse = (res, isSuccess, data = null, message = null) => {
   }
 };
 
-/**
- * General function to find employees based on different criteria
- * @param {Promise} criteria - The criteria to find employees
- * @param {object} res - The response object
- */
 const findEmployeesByCriteria = async (criteria, res) => {
   try {
     const result = await criteria;
@@ -36,14 +32,6 @@ const findEmployeesByCriteria = async (criteria, res) => {
  * @param {object} req - The request object
  * @param {object} res - The response object
  * @returns {Promise<void>}
- * 
- * @example
- * // Example response for status 200
- * {
- *   "status": 1,
- *   "message": "Data found successfully",
- *   "data": [ ...employeeData ]
- * }
  */
 exports.findEmployees = async (req, res) => {
   const { role, department, reportingManager } = req.query;
@@ -55,14 +43,6 @@ exports.findEmployees = async (req, res) => {
  * @param {object} req - The request object
  * @param {object} res - The response object
  * @returns {Promise<void>}
- * 
- * @example
- * // Example response for status 200
- * {
- *   "status": 1,
- *   "message": "Data found successfully",
- *   "data": [ ...employeeData ]
- * }
  */
 exports.findEmployeesByIdsOrNames = async (req, res) => {
   const { employeeIds, employeeNames } = req.body;
@@ -81,14 +61,6 @@ exports.findEmployeesByIdsOrNames = async (req, res) => {
  * @param {object} req - The request object
  * @param {object} res - The response object
  * @returns {Promise<void>}
- * 
- * @example
- * // Example response for status 200
- * {
- *   "status": 1,
- *   "message": "Data found successfully",
- *   "data": [ ...employeeData ]
- * }
  */
 exports.findEmployeesByMobile = async (req, res) => {
   const { mobileNumber } = req.body;
@@ -100,14 +72,6 @@ exports.findEmployeesByMobile = async (req, res) => {
  * @param {object} req - The request object
  * @param {object} res - The response object
  * @returns {Promise<void>}
- * 
- * @example
- * // Example response for status 200
- * {
- *   "status": 1,
- *   "message": "Data found successfully",
- *   "data": [ ...employeeData ]
- * }
  */
 exports.findEmployeesByDOB = async (req, res) => {
   const { startDate, endDate } = req.body;
@@ -119,14 +83,6 @@ exports.findEmployeesByDOB = async (req, res) => {
  * @param {object} req - The request object
  * @param {object} res - The response object
  * @returns {Promise<void>}
- * 
- * @example
- * // Example response for status 200
- * {
- *   "status": 1,
- *   "message": "Data entry successful",
- *   "data": [ ...insertedEmployeeData ]
- * }
  */
 exports.bulkInsertEmployees = async (req, res) => {
   const employees = req.body;

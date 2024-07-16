@@ -3,6 +3,7 @@ const router = express.Router();
 const employeeController = require('../controllers/employeeController');
 const { validateEmployeeSearch, validateBulkInsert } = require('../middlewares/validateRequest');
 const checkDuplicateIds = require('../middlewares/checkDuplicateIds');
+
 /**
  * @swagger
  * components:
@@ -66,6 +67,12 @@ const checkDuplicateIds = require('../middlewares/checkDuplicateIds');
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Employee'
+ *     tags:
+ *       - Employees
+ *     x-codeSamples:
+ *       - lang: cURL
+ *         source: |
+ *           curl -X GET "http://localhost:3000/employees" -H "accept: application/json"
  */
 router.get('/employees', validateEmployeeSearch, employeeController.findEmployees);
 
@@ -109,6 +116,12 @@ router.get('/employees', validateEmployeeSearch, employeeController.findEmployee
  *                     $ref: '#/components/schemas/Employee'
  *       400:
  *         description: Invalid search criteria
+ *     tags:
+ *       - Employees
+ *     x-codeSamples:
+ *       - lang: cURL
+ *         source: |
+ *           curl -X POST "http://localhost:3000/employees/details" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"employeeIds\": [\"id1\", \"id2\"], \"employeeNames\": [\"name1\", \"name2\"] }"
  */
 router.post('/employees/details', validateEmployeeSearch, employeeController.findEmployeesByIdsOrNames);
 
@@ -152,6 +165,12 @@ router.post('/employees/details', validateEmployeeSearch, employeeController.fin
  *                     $ref: '#/components/schemas/Employee'
  *       400:
  *         description: Invalid date format
+ *     tags:
+ *       - Employees
+ *     x-codeSamples:
+ *       - lang: cURL
+ *         source: |
+ *           curl -X POST "http://localhost:3000/employees/details/dob" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"startDate\": \"2024-07-16\", \"endDate\": \"2024-07-16\" }"
  */
 router.post('/employees/details/dob', validateEmployeeSearch, employeeController.findEmployeesByDOB);
 
@@ -189,6 +208,12 @@ router.post('/employees/details/dob', validateEmployeeSearch, employeeController
  *                     $ref: '#/components/schemas/Employee'
  *       400:
  *         description: Invalid mobile number format
+ *     tags:
+ *       - Employees
+ *     x-codeSamples:
+ *       - lang: cURL
+ *         source: |
+ *           curl -X POST "http://localhost:3000/employees/details/mobile" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"mobileNumber\": \"+1234567890\" }"
  */
 router.post('/employees/details/mobile', validateEmployeeSearch, employeeController.findEmployeesByMobile);
 
@@ -224,9 +249,14 @@ router.post('/employees/details/mobile', validateEmployeeSearch, employeeControl
  *                   items:
  *                     $ref: '#/components/schemas/Employee'
  *       400:
- *         description: Invalid input format. Expected an array of employees.
+ *         description: Bad request/Invalid input format. Expected an array of employees.
+ *     tags:
+ *       - Employees
+ *     x-codeSamples:
+ *       - lang: cURL
+ *         source: |
+ *           curl -X POST "http://localhost:3000/employees/bulk" -H "accept: application/json" -H "Content-Type: application/json" -d "[ { \"id\": \"1\", \"name\": \"John Doe\", \"role\": \"Developer\" }, { \"id\": \"2\", \"name\": \"Jane Doe\", \"role\": \"Manager\" } ]"
  */
 router.post('/employees/bulk', validateBulkInsert, checkDuplicateIds, employeeController.bulkInsertEmployees);
 
 module.exports = router;
-
