@@ -4,6 +4,7 @@ const logger = require('./middlewares/logger');
 const logRoutes = require('./middlewares/logRoutes');
 const swaggerSetup = require('./swagger');
 const authMiddleware = require('./middlewares/authMiddleware');
+require('dotenv').config();
 
 const app = express();
 
