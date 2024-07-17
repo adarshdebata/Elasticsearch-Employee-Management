@@ -3,6 +3,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const logger = require('./middlewares/logger');
 const logRoutes = require('./middlewares/logRoutes');
 const swaggerSetup = require('./swagger');
+const authMiddleware = require('./middlewares/authMiddleware');
 
 const app = express();
 
@@ -16,5 +17,7 @@ swaggerSetup(app); // Swagger setup
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`\nServer is running on port ${PORT}`);
+  console.log(`\nSwagger UI available at http://localhost:3000/api-docs`);
+  console.log(`Credentials to access SwaggerUI : \n Username: ${authMiddleware.username}\n Password: ${authMiddleware.password}`);
 });
